@@ -1,0 +1,31 @@
+@import "tailwindcss";
+
+/* *{
+    background-color:white;
+  } */
+  
+  [contentEditable] {
+    outline: none;
+    cursor: text;
+  }
+  
+  [contentEditable]:focus {
+    background: #eef;
+  }
+  /* Loader Overlay */
+  .loader-overlay {
+    @apply fixed inset-0 flex justify-center items-center z-50;
+    background-color: rgba(0, 0, 0, 0.5); /* Fallback for semi-transparent black */
+  }
+  
+  /* Loader Animation */
+  .loader {
+    @apply w-12 h-12 border-4 border-gray-200 border-t-blue-500 rounded-full;
+    animation: spin 1s linear infinite;
+  }
+  
+  /* Spinner Animation */
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }

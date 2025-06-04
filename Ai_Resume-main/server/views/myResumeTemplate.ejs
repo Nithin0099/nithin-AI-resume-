@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title><%= resumeData.name %> - Resume</title>
+    <style>
+        * {
+            margin: 0; padding: 0; box-sizing: border-box;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.4;
+            color: #333;
+            background: #f5f5f5;
+        }
+        .resume-container {
+            width: 210mm;
+            height: 297mm;
+            margin: 20px auto;
+            background: white;
+            padding: 24px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+            position: relative;
+        }
+        @media print {
+            body { background: white; }
+            .resume-container { 
+                margin: 0; 
+                box-shadow: none; 
+                width: 100%; 
+                height: 100%; 
+            }
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 16px;
+            border-bottom: 2px solid #e5e7eb;
+            padding-bottom: 16px;
+        }
+        .header-info {
+            flex: 1;
+        }
+        .name {
+            font-size: 24px;
+            font-weight: bold;
+            color: #111827;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 4px;
+        }
+        .role {
+            font-size: 12px;
+            color: #2563eb;
+            margin-bottom: 8px;
+        }
+        .contact-info {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            font-size: 10px;
+            color: #6b7280;
+        }
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .photo {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            object-fit: cover;
+            flex-shrink: 0;
+        }
+        .main-content {
+            display: flex;
+            gap: 24px;
+        }
+        .left-column {
+            flex: 2;
+            padding-right: 12px;
+        }
+        .right-column {
+            flex: 1;
+            padding-left: 12px;
+        }
+        .section {
+            margin-bottom: 16px;
+        }
+        .section-title {
+            font-size: 14px;
+            font-weight: bold;
+            color: #111827;
+            border-bottom: 1px solid #d1d5db;
+            padding-bottom: 4px;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+        }
+        .summary-text {
+            font-size: 10px;
+            color: #374151;
+            line-height: 1.6;
+        }
+        .experience-item, .education-item, .achievement-item {
+            margin-bottom: 12px;
+        }
+        .experience-header, .education-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2px;
+        }
+        .job-title, .degree {
+            font-size: 12px;
+            font-weight: bold;
+            color: #2563eb;
+        }
+        .date {
+            font-size: 10px;
+            color: #6b7280;
+            font-style: italic;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .company-info, .institution-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 4px;
+        }
+        .company-name, .institution-name {
+            font-size: 10px;
+            color: #111827;
+        }
+        .location {
+            font-size: 10px;
+            color: #6b7280;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .accomplishments {
+            margin-top: 4px;
+        }
+        .accomplishments ul {
+            list-style: disc;
+            padding-left: 16px;
+        }
+        .accomplishments li {
+            font-size: 10px;
+            color: #374151;
+            line-height: 1.6;
+            margin-bottom: 2px;
+        }
+        .achievement-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+        }
+        .achievement-icon {
+            color: #6b7280;
+            margin-top: 2px;
+        }
+        .achievement-content h3 {
+            font-size: 12px;
+            font-weight: bold;
+            color: #111827;
+            margin-bottom: 2px;
+        }
+        .achievement-content p {
+            font-size: 10px;
+            color: #374151;
+        }
+        .skills-category {
+            margin-bottom: 8px;
+        }
+        .skills-category-title {
+            font-size: 10px;
+            font-weight: bold;
+            color: #111827;
+            margin-bottom: 4px;
+        }
+        .skills-list {
+            font-size: 10px;
+            color: #6b7280;
+            line-height: 1.4;
+        }
+        .language-item {
+            margin-bottom: 8px;
+        }
+        .language-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 4px;
+        }
+        .language-name {
+            font-size: 12px;
+            font-weight: bold;
+            color: #111827;
+        }
+        .language-level {
+            font-size: 10px;
+            color: #6b7280;
+        }
+        .language-dots {
+            display: flex;
+            gap: 4px;
+        }
+        .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #d1d5db;
+        }
+        .dot.filled {
+            background: #111827;
+        }
+        .project-item {
+            margin-bottom: 12px;
+        }
+        .project-title {
+            font-size: 12px;
+            font-weight: bold;
+            color: #2563eb;
+            margin-bottom: 2px;
+        }
+        .project-description {
+            font-size: 10px;
+            color: #374151;
+            margin-bottom: 2px;
+        }
+        .project-duration {
+            font-size: 10px;
+            color: #6b7280;
+            font-style: italic;
+        }
+        .branding {
+            position: absolute;
+            bottom: 24px;
+            left: 24px;
+            right: 24px;
+            display: flex;
+            justify-content: space-between;
+            font-size: 8px;
+            color: #9ca3af;
+        }
+        @page {
+            size: A4;
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="resume-container">
+        <!-- Header Section -->
+        <div class="header">
+            <div class="header-info">
+                <h1 class="name"><%= resumeData.name %></h1>
+                <p class="role"><%= resumeData.role %></p>
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <span>☎</span>
+                        <span><%= resumeData.phone %></span>
+                    </div>
+                    <div class="contact-item">
+                        <span>✉</span>
+                        <span><%= resumeData.email %></span>
+                    </div>
+                    <div class="contact-item">
+                        <span>🔗</span>
+                        <span><%= resumeData.linkedin %></span>
+                    </div>
+                    <div class="contact-item">
+                        <span>📍</span>
+                        <span><%= resumeData.location %></span>
+                    </div>
+                </div>
+            </div>
+            <% if (resumeData.photo) { %>
+                <img src="<%= resumeData.photo %>" alt="Profile Photo" class="photo" />
+            <% } %>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Left Column -->
+            <div class="left-column">
+
+                <!-- Summary -->
+                <div class="section">
+                    <h2 class="section-title">Summary</h2>
+                    <p class="summary-text"><%= resumeData.summary %></p>
+                </div>
+
+                <!-- Experience -->
+                <div class="section">
+                    <h2 class="section-title">Experience</h2>
+                    <% resumeData.experience.forEach(exp => { %>
+                        <div class="experience-item">
+                            <div class="experience-header">
+                                <h3 class="job-title"><%= exp.title %></h3>
+                                <div class="date">
+                                    <span>📅</span>
+                                    <span><%= exp.date %></span>
+                                </div>
+                            </div>
+                            <div class="company-info">
+                                <p class="company-name"><%= exp.companyName %></p>
+                                <div class="location">
+                                    <span>📍</span>
+                                    <span><%= exp.companyLocation %></span>
+                                </div>
+                            </div>
+                            <div class="accomplishments">
+                                <ul>
+                                    <% 
+                                        let accomplishments = Array.isArray(exp.accomplishment) 
+                                            ? exp.accomplishment 
+                                            : (typeof exp.accomplishment === 'string' 
+                                                ? exp.accomplishment.split('\n').filter(line => line.trim() !== '') 
+                                                : []);
+                                    %>
+                                    <% accomplishments.forEach(bullet => { %>
+                                        <li><%= bullet.replace(/^•\s*/, '') %></li>
+                                    <% }); %>
+                                </ul>
+                            </div>
+                        </div>
+                    <% }); %>
+                </div>
+
+                <!-- Education -->
+                <div class="section">
+                    <h2 class="section-title">Education</h2>
+                    <% resumeData.education.forEach(edu => { %>
+                        <div class="education-item">
+                            <h3 class="degree"><%= edu.degree %></h3>
+                            <div class="institution-info">
+                                <p class="institution-name"><%= edu.institution %></p>
+                                <div class="date">
+                                    <span>📅</span>
+                                    <span><%= edu.duration %></span>
+                                </div>
+                            </div>
+                            <div class="location">
+                                <span>📍</span>
+                                <span><%= edu.location %></span>
+                            </div>
+                        </div>
+                    <% }); %>
+                </div>
+
+            </div>
+
+            <!-- Right Column -->
+            <div class="right-column">
+
+                <!-- Skills -->
+                <div class="section">
+                    <h2 class="section-title">Skills</h2>
+                    <% resumeData.skills.forEach(skillCategory => { %>
+                        <div class="skills-category">
+                            <p class="skills-category-title"><%= skillCategory.category %></p>
+                            <div class="skills-list">
+                                <% skillCategory.items.forEach((item, index) => { %>
+                                    <%= item %><% if (index < skillCategory.items.length - 1) { %>, <% } %>
+                                <% }); %>
+                            </div>
+                        </div>
+                    <% }); %>
+                </div>
+
+                <!-- Achievements -->
+                <div class="section">
+                    <h2 class="section-title">Strengths</h2>
+                    <% resumeData.achievements.forEach(achievement => { %>
+                        <div class="achievement-item">
+                            <span class="achievement-icon">🏆</span>
+                            <div class="achievement-content">
+                                <h3><%= achievement.keyAchievements %></h3>
+                                <p><%= achievement.describe %></p>
+                            </div>
+                        </div>
+                    <% }); %>
+                </div>
+
+                <!-- Languages -->
+                <div class="section">
+                    <h2 class="section-title">Languages</h2>
+                    <% resumeData.languages.forEach(lang => { %>
+                        <div class="language-item">
+                            <div class="language-header">
+                                <p class="language-name"><%= lang.name %></p>
+                                <p class="language-level"><%= lang.level %></p>
+                            </div>
+                            <div class="language-dots">
+                                <% for (let i = 0; i < 5; i++) { %>
+                                    <span class="dot <%= i < lang.dots ? 'filled' : '' %>"></span>
+                                <% } %>
+                            </div>
+                        </div>
+                    <% }); %>
+                </div>
+
+                <!-- Projects -->
+                <% if (resumeData.projects && resumeData.projects.length > 0) { %>
+                    <div class="section">
+                        <h2 class="section-title">Projects</h2>
+                        <% resumeData.projects.forEach(project => { %>
+                            <div class="project-item">
+                                <h3 class="project-title"><%= project.name %></h3>
+                                <p class="project-description"><%= project.description %></p>
+                                <p class="project-duration"><%= project.duration %></p>
+                            </div>
+                        <% }); %>
+                    </div>
+                <% } %>
+
+            </div>
+        </div>
+
+        <!-- Branding / Footer -->
+        <div class="branding">
+            <div>Generated by AI Resume Builder</div>
+            <div>Page 1</div>
+        </div>
+    </div>
+</body>
+</html>

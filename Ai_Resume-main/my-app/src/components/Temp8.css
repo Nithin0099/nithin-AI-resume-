@@ -1,0 +1,284 @@
+.temp8-container {
+  display: flex;
+  min-height: 100vh;
+  padding-left: 8rem;
+}
+
+.temp8-resume {
+  font-family: "Arial", sans-serif;
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 30px;
+  background-color: #fff;
+  color: #333;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  flex-grow: 1;
+  margin-left: 220px; 
+  box-sizing: border-box; 
+}
+
+.temp8-header {
+  text-align: center;
+  margin-bottom: 20px;
+  border-bottom: 2px solid #ff7b25;
+  padding-bottom: 20px;
+  position: relative;
+}
+
+.temp8-name {
+  font-size: 28px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 5px;
+  text-transform: uppercase;
+}
+
+.temp8-title {
+  font-size: 18px;
+  color: #ff7b25;
+  margin-bottom: 15px;
+  text-transform: uppercase;
+}
+
+.temp8-contact-info {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.temp8-contact-item {
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+}
+
+.temp8-contact-item .temp8-icon {
+  color: #ff7b25;
+  margin-right: 5px;
+  font-weight: bold;
+}
+
+.temp8-section {
+  margin-bottom: 25px;
+  position: relative;
+}
+
+.temp8-section-title {
+  font-size: 18px;
+  font-weight: bold;
+  color: #ff7b25;
+  text-transform: uppercase;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 5px;
+  margin-bottom: 15px;
+}
+
+.temp8-summary-text {
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.temp8-education-item,
+.temp8-experience-item {
+  margin-bottom: 20px;
+}
+
+.temp8-education-header,
+.temp8-experience-header {
+  display: flex;
+  justify-content: space-between;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.temp8-institution,
+.temp8-organization {
+  font-style: italic;
+  margin-bottom: 5px;
+}
+
+.temp8-gpa,
+.temp8-coursework,
+.temp8-dissertation {
+  margin-bottom: 5px;
+  font-size: 14px;
+}
+
+.temp8-responsibilities {
+  padding-left: 20px;
+  margin-top: 10px;
+}
+
+.temp8-responsibilities li {
+  margin-bottom: 5px;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.temp8-skills-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.temp8-skill-item {
+  background-color: #ff7b25;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 3px;
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.temp8-hobbies-list {
+  padding-left: 20px;
+  margin-top: 10px;
+}
+
+.temp8-hobbies-list li {
+  margin-bottom: 5px;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.temp8-settings-icon {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  cursor: pointer;
+  color: #ff7b25;
+}
+
+.temp8-settings-panel {
+  position: absolute;
+  top: 40px;
+  right: 10px;
+  background: white;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  z-index: 10;
+}
+
+.temp8-setting-item {
+  margin-bottom: 5px;
+}
+
+.temp8-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+  flex-wrap: wrap;
+}
+
+.temp8-add-btn,
+.temp8-remove-btn {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 10px;
+  font-size: 12px;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.temp8-add-btn {
+  background-color: #4caf50;
+  color: white;
+}
+
+.temp8-remove-btn {
+  background-color: #f44336;
+  color: white;
+}
+
+.temp8-remove-resp-btn,
+.temp8-remove-skill-btn,
+.temp8-remove-hobby-btn {
+  background: none;
+  border: none;
+  color: #f44336;
+  cursor: pointer;
+  padding: 0;
+  font-size: 12px;
+}
+
+/* Responsive styles */
+@media (max-width: 1023px) {
+  .temp8-container {
+    flex-direction: column;
+    padding: 3rem;
+  }
+  
+  .temp8-resume {
+    margin-left: 0;
+    padding: 20px;
+    margin-top: 20px;
+  }
+  
+  .temp8-header {
+    padding-bottom: 15px;
+  }
+  
+  .temp8-name {
+    font-size: 24px;
+  }
+  
+  .temp8-title {
+    font-size: 16px;
+  }
+  
+  .temp8-contact-info {
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+  }
+  
+  .temp8-education-header,
+  .temp8-experience-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 5px;
+  }
+  
+  .temp8-date {
+    font-size: 14px;
+  }
+  
+  .temp8-skills-container {
+    gap: 8px;
+  }
+}
+@media (max-width: 480px) {
+  .temp8-container {
+    flex-direction: column;
+    padding: 0;
+  }
+
+  .temp8-resume {
+    padding: 15px;
+  }
+  
+  .temp8-name {
+    font-size: 22px;
+  }
+  
+  .temp8-section-title {
+    font-size: 16px;
+  }
+  
+  .temp8-actions {
+    flex-direction: column;
+  }
+}
