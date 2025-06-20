@@ -1,10 +1,10 @@
-
 import React, { useState, useRef, useEffect } from 'react';
 import axios from 'axios';
 import './Temp1.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPhone, faEnvelope, faMapMarkerAlt } from '@fortawesome/free-solid-svg-icons';
 import { faLinkedin } from "@fortawesome/free-brands-svg-icons";
+
 const Temp2 = () => {
   const [showEnhancementOptions, setShowEnhancementOptions] = useState(false);
   const [resumeData, setResumeData] = useState({
@@ -47,14 +47,15 @@ const Temp2 = () => {
   const [showButtons, setShowButtons] = useState(true);
   const [loading, setLoading] = useState(false);
   const isValidEmail = (email) => {
-    const trimmedEmail = email.trim(); // Remove leading/trailing spaces
+    const trimmedEmail = email.trim();
     const re = /^[^\s@]+@[^\s@]+\.[^@\s]+$/;
     return re.test(trimmedEmail);
   };
+
   useEffect(() => {
     const loadSavedResume = async () => {
-      if (resumeData.email === "yourname@example.com") return; // Skip if placeholder email
-      if (!isValidEmail(resumeData.email)) return; // Skip if email is invalid
+      if (resumeData.email === "yourname@example.com") return;
+      if (!isValidEmail(resumeData.email)) return;
       try {
         const response = await axios.get('http://localhost:5000/api/resume1/load', {
           params: { email: resumeData.email },
@@ -88,7 +89,7 @@ const Temp2 = () => {
   const handleUserContent = (section, key, value, index = null) => {
     let sanitizedValue = value;
     if (section === "email") {
-      sanitizedValue = value.replace(/[^\w@.-]/g, '').trim(); // Remove all non-alphanumeric, non-@, non-., non-- characters
+      sanitizedValue = value.replace(/[^\w@.-]/g, '').trim();
     }
     setResumeData(prevData => {
       const updatedData = { ...prevData };
@@ -104,7 +105,6 @@ const Temp2 = () => {
       return updatedData;
     });
   };
-  
 
   const addNewEntry = (section) => {
     setResumeData(prevData => {
@@ -147,6 +147,7 @@ const Temp2 = () => {
       return updatedData;
     });
   };
+
   const resumeRef = useRef(null);
 
   const handleAIEnhancement = async () => {
@@ -155,7 +156,7 @@ const Temp2 = () => {
       alert("Resume created. Click AI Assistant again.");
       return;
     }
-    setLoading(true); // Start loading
+    setLoading(true);
     setShowEnhancementOptions(true);
     setLoading(false); 
   };
@@ -163,23 +164,19 @@ const Temp2 = () => {
   const downloadPdf = async () => {
     try {
         setLoading(true);
-
-        // Send API request to generate PDF
         const response = await axios.post(
-            "http://localhost:5000/api/resume1/generate-pdf", // Ensure this is the correct endpoint
+            "http://localhost:5000/api/resume1/generate-pdf",
             { resumeData },
             {
-                responseType: "blob",  // Ensures response is treated as a file
+                responseType: "blob",
                 headers: { "Content-Type": "application/json" }
             }
         );
 
-        // Validate Blob response
         if (!response || !response.data || !(response.data instanceof Blob)) {
             throw new Error("Invalid PDF response");
         }
 
-        // Create and trigger download
         const url = window.URL.createObjectURL(response.data);
         const link = document.createElement("a");
         link.href = url;
@@ -187,7 +184,6 @@ const Temp2 = () => {
         document.body.appendChild(link);
         link.click();
 
-        // Cleanup
         setTimeout(() => {
             document.body.removeChild(link);
             window.URL.revokeObjectURL(url);
@@ -199,8 +195,7 @@ const Temp2 = () => {
         alert("PDF generation failed. Please check your resume data.");
         setLoading(false);
     }
-};
-
+  };
 
   const createResume = async () => {
     if (!isValidEmail(resumeData.email)) {
@@ -241,18 +236,19 @@ const Temp2 = () => {
     }
   };
 
-  const enhanceSingleField = async (field) => {
+  const enhanceSingleField = async (field, index = null) => {
     if (!resumeData._id) {
       alert("Please save your resume before enhancing a field.");
       return;
     }
     try {
       setLoading(true);
-      console.log(`🔹 Sending request to enhance ${field}:`, resumeData[field]);
+      console.log(`🔹 Sending request to enhance ${field}:`, index !== null ? resumeData[field][index] : resumeData[field]);
   
       const response = await axios.post('http://localhost:5000/api/resume1/enhanceField', {
         resumeId: resumeData._id,
         field,
+        index
       });
   
       if (response.data?.data) {
@@ -268,7 +264,6 @@ const Temp2 = () => {
       setLoading(false);
     }
   };
-  
 
   return (
     <div className="flex gap-4 text-xs">
@@ -306,7 +301,7 @@ const Temp2 = () => {
               className="w-full bg-gray-700 text-white p-2 mb-2 rounded hover:bg-gray-600 transition-colors"
               onClick={() => enhanceSingleField("experience")}
             >
-              Enhance Experience
+              Enhance All Experiences
             </button>
             <button
               className="w-full bg-gray-700 text-white p-2 mb-2 rounded hover:bg-gray-600 transition-colors"
@@ -376,7 +371,6 @@ const Temp2 = () => {
       <div className="editResume w-6/7 bg-white p-4 ml-24">
         <div id="resumeBody">
           <div className="firstBlock">
-            {/* Name */}
             <div
               className="user-name"
               contentEditable
@@ -387,7 +381,6 @@ const Temp2 = () => {
             >
               <h2 className="res-h2">{resumeData?.name}</h2>
             </div>
-            {/* Role */}
             <div
               className="user-role"
               contentEditable
@@ -398,9 +391,7 @@ const Temp2 = () => {
             >
               {resumeData?.role}
             </div>
-            {/* Contact Details */}
             <div className="user-contacts">
-              {/* Phone */}
               {resumeData?.phone && (
                 <div className="user-phone">
                   <FontAwesomeIcon icon={faPhone} />{" "}
@@ -416,7 +407,6 @@ const Temp2 = () => {
                   {" | "}
                 </div>
               )}
-              {/* Email */}
               {resumeData?.email && (
                 <div className="user-email">
                   <FontAwesomeIcon icon={faEnvelope} />{" "}
@@ -432,7 +422,6 @@ const Temp2 = () => {
                   {" | "}
                 </div>
               )}
-              {/* LinkedIn */}
               {resumeData?.linkedin && (
                 <div className="user-linkedin">
                   <FontAwesomeIcon icon={faLinkedin} />{" "}
@@ -448,7 +437,6 @@ const Temp2 = () => {
                   {" | "}
                 </div>
               )}
-              {/* Location */}
               {resumeData?.location && (
                 <div className="user-location">
                   <FontAwesomeIcon icon={faMapMarkerAlt} />{" "}
@@ -584,22 +572,40 @@ const Temp2 = () => {
                     >
                       {exp.accomplishment}
                     </div>
-                    {resumeData?.experience?.length > 1 && (
+                    <div className="flex gap-2">
+                      {resumeData?.experience?.length > 1 && (
+                        <button
+                          onClick={() => removeEntry("experience", idx)}
+                          className="remove-btn bg-blue-600 cursor-pointer hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition duration-300 ease-in-out"
+                        >
+                          Remove
+                        </button>
+                      )}
                       <button
-                        onClick={() => removeEntry("experience", idx)}
-                        className="remove-btn bg-blue-600 cursor-pointer hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition duration-300 ease-in-out"
+                        onClick={() => addNewEntry("experience")}
+                        className="add-btn bg-blue-600 cursor-pointer hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition duration-300 ease-in-out"
                       >
-                        Remove
+                        + New Entry
                       </button>
-                    )}
+                      {showEnhancementOptions && (
+                        <button
+                          onClick={() => enhanceSingleField("experience", idx)}
+                          className="enhance-btn bg-green-600 cursor-pointer hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition duration-300 ease-in-out"
+                        >
+                          Enhance This
+                        </button>
+                      )}
+                    </div>
                   </div>
                 ))}
-                <button
-                  onClick={() => addNewEntry("experience")}
-                  className="add-btn bg-blue-600 cursor-pointer hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition duration-300 ease-in-out"
-                >
-                  + New Entry
-                </button>
+                {resumeData?.experience?.length === 0 && (
+                  <button
+                    onClick={() => addNewEntry("experience")}
+                    className="add-btn bg-blue-600 cursor-pointer hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition duration-300 ease-in-out"
+                  >
+                    + Add Experience
+                  </button>
+                )}
               </div>
               <button
                 className="remove-section-btn bg-blue-600 cursor-pointer hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition duration-300 ease-in-out"
@@ -685,6 +691,14 @@ const Temp2 = () => {
                         Remove
                       </button>
                     )}
+                    {showEnhancementOptions && (
+                      <button
+                        onClick={() => enhanceSingleField("education", idx)}
+                        className="enhance-btn bg-green-600 cursor-pointer hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition duration-300 ease-in-out"
+                      >
+                        Enhance This
+                      </button>
+                    )}
                   </div>
                 ))}
                 <button
@@ -744,6 +758,14 @@ const Temp2 = () => {
                         className="remove-btn bg-blue-600 cursor-pointer hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition duration-300 ease-in-out"
                       >
                         Remove
+                      </button>
+                    )}
+                    {showEnhancementOptions && (
+                      <button
+                        onClick={() => enhanceSingleField("achievements", idx)}
+                        className="enhance-btn bg-green-600 cursor-pointer hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition duration-300 ease-in-out"
+                      >
+                        Enhance This
                       </button>
                     )}
                   </div>
@@ -829,6 +851,14 @@ const Temp2 = () => {
                         Remove
                       </button>
                     )}
+                    {showEnhancementOptions && (
+                      <button
+                        onClick={() => enhanceSingleField("courses", idx)}
+                        className="enhance-btn bg-green-600 cursor-pointer hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition duration-300 ease-in-out"
+                      >
+                        Enhance This
+                      </button>
+                    )}
                   </div>
                 ))}
                 <button
@@ -904,6 +934,14 @@ const Temp2 = () => {
                         className="remove-btn bg-blue-600 cursor-pointer hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition duration-300 ease-in-out"
                       >
                         Remove
+                      </button>
+                    )}
+                    {showEnhancementOptions && (
+                      <button
+                        onClick={() => enhanceSingleField("projects", idx)}
+                        className="enhance-btn bg-green-600 cursor-pointer hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition duration-300 ease-in-out"
+                      >
+                        Enhance This
                       </button>
                     )}
                   </div>
