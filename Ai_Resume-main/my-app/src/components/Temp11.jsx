@@ -3,7 +3,7 @@ import { X,Menu,Download, Upload, Share, Settings, Bot, ArrowUp, ArrowDown } fro
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 
-const Temp5 = () => {
+const Temp11 = () => {
 const resumeRef = useRef(null);
 const [menuOpen, setMenuOpen] = useState(false);
 const [isLoadingAI, setIsLoadingAI] = useState(false);
@@ -864,4 +864,4 @@ const handleDownload = () => {
   );
 };
 
-export default Temp5;
+export default Temp11;

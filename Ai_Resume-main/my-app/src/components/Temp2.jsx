@@ -46,6 +46,7 @@ const Temp2 = () => {
   });
   const [showButtons, setShowButtons] = useState(true);
   const [loading, setLoading] = useState(false);
+  const [lastClickTime, setLastClickTime] = useState(0);
   const isValidEmail = (email) => {
     const trimmedEmail = email.trim();
     const re = /^[^\s@]+@[^\s@]+\.[^@\s]+$/;
@@ -151,6 +152,18 @@ const Temp2 = () => {
   const resumeRef = useRef(null);
 
   const handleAIEnhancement = async () => {
+    const now = Date.now();
+    const doubleClickThreshold = 300; // 300ms threshold for double click
+    
+    if (now - lastClickTime < doubleClickThreshold) {
+      // Double click detected - close the enhancement options
+      setShowEnhancementOptions(false);
+      setLastClickTime(0);
+      return;
+    }
+    
+    setLastClickTime(now);
+    
     if (!resumeData._id) {
       await createResume();
       alert("Resume created. Click AI Assistant again.");
@@ -238,11 +251,12 @@ const Temp2 = () => {
 
   const enhanceSingleField = async (field, index = null) => {
     if (!resumeData._id) {
+      await saveResume();
       alert("Please save your resume before enhancing a field.");
       return;
     }
     try {
-      setLoading(true);
+      await saveResume();
       console.log(`🔹 Sending request to enhance ${field}:`, index !== null ? resumeData[field][index] : resumeData[field]);
   
       const response = await axios.post('http://localhost:5000/api/resume1/enhanceField', {
@@ -283,44 +297,52 @@ const Temp2 = () => {
           🤖 AI Assistant
         </button>
         {showEnhancementOptions && (
-          <div className="ai-field-enhancement">
-            <h4>Enhance Specific Field</h4>
-            <button
-              className="w-full bg-gray-700 text-white p-2 mb-2 rounded hover:bg-gray-600 transition-colors"
-              onClick={() => enhanceSingleField("summary")}
-            >
-              Enhance Summary
-            </button>
-            <button
-              className="w-full bg-gray-700 text-white p-2 mb-2 rounded hover:bg-gray-600 transition-colors"
-              onClick={() => enhanceSingleField("skills")}
-            >
-              Enhance Skills
-            </button>
-            <button
-              className="w-full bg-gray-700 text-white p-2 mb-2 rounded hover:bg-gray-600 transition-colors"
-              onClick={() => enhanceSingleField("experience")}
-            >
-              Enhance All Experiences
-            </button>
-            <button
-              className="w-full bg-gray-700 text-white p-2 mb-2 rounded hover:bg-gray-600 transition-colors"
-              onClick={() => enhanceSingleField("achievements")}
-            >
-              Enhance Achievements
-            </button>
-            <button
-              className="w-full bg-gray-700 text-white p-2 mb-2 rounded hover:bg-gray-600 transition-colors"
-              onClick={() => enhanceSingleField("courses")}
-            >
-              Enhance Courses
-            </button>
-            <button
-              className="w-full bg-gray-700 text-white p-2 mb-2 rounded hover:bg-gray-600 transition-colors"
-              onClick={() => enhanceSingleField("projects")}
-            >
-              Enhance Projects
-            </button>
+          <div className="ai-field-enhancement mb-4 p-2 bg-gray-700 rounded">
+            <h4 className="text-center mb-2 font-bold">Enhance Specific Field</h4>
+            <div className="grid grid-cols-1 gap-2">
+              <button
+                className="w-full bg-gray-600 text-white p-2 rounded hover:bg-gray-500 transition-colors"
+                onClick={() => enhanceSingleField("summary")}
+              >
+                Enhance Summary
+              </button>
+              <button
+                className="w-full bg-gray-600 text-white p-2 rounded hover:bg-gray-500 transition-colors"
+                onClick={() => enhanceSingleField("skills")}
+              >
+                Enhance Skills
+              </button>
+              <button
+                className="w-full bg-gray-600 text-white p-2 rounded hover:bg-gray-500 transition-colors"
+                onClick={() => enhanceSingleField("experience")}
+              >
+                Enhance All Experiences
+              </button>
+              <button
+                className="w-full bg-gray-600 text-white p-2 rounded hover:bg-gray-500 transition-colors"
+                onClick={() => enhanceSingleField("education")}
+              >
+                Enhance Education
+              </button>
+              <button
+                className="w-full bg-gray-600 text-white p-2 rounded hover:bg-gray-500 transition-colors"
+                onClick={() => enhanceSingleField("achievements")}
+              >
+                Enhance Achievements
+              </button>
+              <button
+                className="w-full bg-gray-600 text-white p-2 rounded hover:bg-gray-500 transition-colors"
+                onClick={() => enhanceSingleField("courses")}
+              >
+                Enhance Courses
+              </button>
+              <button
+                className="w-full bg-gray-600 text-white p-2 rounded hover:bg-gray-500 transition-colors"
+                onClick={() => enhanceSingleField("projects")}
+              >
+                Enhance Projects
+              </button>
+            </div>
           </div>
         )}
         <button
